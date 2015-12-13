@@ -1,0 +1,37 @@
+\documentclass[10pt,onecolumn,letterpaper]{article}
+\usepackage[top=1in, bottom=1.25in, left=1.25in, right=1.25in]{geometry}
+
+\setcounter{page}{1}
+\begin{document}
+
+%%%%%%%%% TITLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Combinatorial Auctions}
+
+\author{Nathan Immerman\\
+College of Engineering, University of Michigan\\
+Ann Arbor, Michigan\\
+{\tt\small immerman@umich.edu}
+}
+
+\maketitle
+
+%%%%%%%%%% Body %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Abstract}
+
+\section{Introduction}
+
+In a standard auction, there is a single good being sold to one or more players who have a demand for that good. The auctioneer determines which player is allocated the good based on which player displays the greatest demand. There are many ways for the auctioneer to coordinate the auction, including the ascending and descending price auction, which all have the overall goal of determining who is allocated the good. Combinatorial auctions generalize this concept by allowing multiple goods to be auctions and players have demands for bundles or subsets of the goods. 
+
+Formally, each player $i$ in the combinatorial auction has a valuation function $v_i$ which describes their value for all subsets of goods in the auction. For each subset of goods $S$, player $i$ receives the value $v_i(S)$ if they receive the bundle. A player's valuation must be monotone, namely if $S \subseteq T$ then $v_i(S) \leq v_i(T)$ and must be normalized to $v_i(\emptyset)= 0$. By defining a player's valuation function in this manner we allow players to express complementary and substitutive goods in their valuations. Completment goods are valued more together that the sum of their values individually, $v(S \cup T) > v(S) + v(t)$, while substite good are valued more individually, $v(S \cup T) < v(S) + v(t)$. By allowing such expressions, players can fully expresses their demands for many sets of goods.
+
+In combinatorial auctions, the auctioneer has to determine allocation of goods for which any good is only allocated to one player, so every allocaiton is in the form $S_1,...,S_n$ where $S_i \cap S_j = \emptyset$ for every $i \neq j$. From this, the social welfare of the allocation is equal to $\sum_i v_i(S_i)$.
+
+\section{Applications of Combinatorial Auctions}
+
+
+\section{Bibliography}
+
+
+
+\end{document}
