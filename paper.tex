@@ -1,5 +1,9 @@
 \documentclass[10pt,onecolumn,letterpaper]{article}
-\usepackage[top=1in, bottom=1.25in, left=1.25in, right=1.25in]{geometry}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{amsthm}
+\usepackage{todonotes}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
 
 \setcounter{page}{1}
 \begin{document}
@@ -18,29 +22,66 @@ Ann Arbor, Michigan\\
 %%%%%%%%%% Body %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Abstract}
+\todo{don't forget me}
 
 \section{Introduction}
 
-In a standard auction, there is a single good being sold to one or more players who have a demand for that good. The auctioneer determines which player is allocated the good based on which player displays the greatest demand. There are many ways for the auctioneer to coordinate the auction, including the ascending and descending price auction, which all have the overall goal of determining who is allocated the good. Combinatorial auctions generalize this concept by allowing multiple goods to be auctions and players have demands for bundles or subsets of the goods. 
+In a standard auction, \todo{mention how this relates to auctions in the course} there is a single good being sold to one or more players who have a demand for that good. The auctioneer determines which player is allocated the good based on which player displays the greatest demand. There are many ways for the auctioneer to coordinate the auction, including the ascending and descending price auction, which all have the overall goal of determining who is allocated the good. Combinatorial auctions generalize this concept by allowing multiple goods to be auctions and players have demands for bundles or subsets of the goods. The authors, Liad Blumrosen and Noam Nisan, in their paper on Combinatorial Auctions, analyze the computational complexity of possible allocation algorithms, how to represent and communicate the value functions of bidders, and the strategic behaivier of rational bidders in combinatorial auctions. In the remainder of this paper, I will be summerizing and analyzing the main arguments made by Blumrosen and Nisan on combinatorial auctions. 
 
-Formally, each player $i$ in the combinatorial auction has a valuation function $v_i$ which describes their value for all subsets of goods in the auction. For each subset of goods $S$, player $i$ receives the value $v_i(S)$ if they receive the bundle. A player's valuation must be monotone, namely if $S \subseteq T$ then $v_i(S) \leq v_i(T)$ and must be normalized to $v_i(\emptyset)= 0$. By defining a player's valuation function in this manner we allow players to express complementary and substitutive goods in their valuations. Completment goods are valued more together that the sum of their values individually, $v(S \cup T) > v(S) + v(t)$, while substite good are valued more individually, $v(S \cup T) < v(S) + v(t)$. By allowing such expressions, players can fully expresses their demands for many sets of goods.
+Formally, each player $i$ in the combinatorial auction has a valuation function $v_i$ which describes their value for all subsets of goods in the auction. For each subset of goods $S$, player $i$ receives the value $v_i(S)$ if they receive the bundle. A player's valuation must be monotone, namely if $S \subseteq T$ then $v_i(S) \leq v_i(T)$ and must be normalized to $v_i(\emptyset)= 0$. By defining a player's valuation function in this manner we allow players to express complementary and substitutive goods in their valuations. Complement goods are valued more together that the sum of their values individually, $v(S \cup T) > v(S) + v(t)$, while substitute good are valued more individually, $v(S \cup T) < v(S) + v(t)$. By allowing such expressions, players can fully expresses their demands for many sets of goods.
 
-In combinatorial auctions, the auctioneer has to determine allocation of goods for which any good is only allocated to one player, so every allocaiton is in the form $S_1,...,S_n$ where $S_i \cap S_j = \emptyset$ for every $i \neq j$. From this, the social welfare of the allocation is equal to $\sum_i v_i(S_i)$.
+In combinatorial auctions, the auctioneer has to determine allocation of goods for which any good is only allocated to one player, so every allocation is in the form $S_1,...,S_n$ where $S_i \cap S_j = \emptyset$ for every $i \neq j$. From this, the social welfare of the allocation is equal to $\sum_i v_i(S_i)$.
 
 \section{Applications of Combinatorial Auctions}
 
-Auctions are used to sell goods when the true values that the players have for the goods are unknown by the seller. Combinational auctions add the additional complexity of players values are based on a set of goods rather than just on a single good. This additional layer of complexity makes combinatorial auctions well suited for many applications including: the london bus routes, airport runway slots, and the Federal Communications Commision (FCC) airwave spectrum auctions. 
+Auctions are used to sell goods when the true values that the players have for the goods are unknown by the seller. Combinational auctions add the additional complexity of players values are based on a set of goods rather than just on a single good. This additional layer of complexity makes combinatorial auctions well suited for many applications including: the London bus routes, airport runway slots, and the Federal Communications Commission (FCC) airwaves spectrum auctions. 
 
-When the London bus system was deregulated in 1984, a problem was introduced as to how best to commision different companies to operate the different bus routs. Ultimately the commision in charge decided to use a form of a combinatorial first price aution to commision the bus routes. They made this decision so companies could take advantage of economies of scale and bid on multiple bus routes at a time. There are many benifits to owning similar bus routes, including lower fixed costs, so by using a combinatorial auciton the commision allowed companies to bid on bundles of routes without requiring the company to also bid on the individual routes. By using a combinatorial auction, the commision made it possible to create a more socially optimal allocation of the bus routes. 
+When the London bus system was deregulated in 1984, a problem was introduced as to how best to commission different companies to operate the different bus routs. Ultimately the commission in charge decided to use a form of a combinatorial first price auction to commission the bus routes. They made this decision so companies could take advantage of economies of scale and bid on multiple bus routes at a time. There are many benefits to owning similar bus routes, including lower fixed costs, so by using a combinatorial auction the commission allowed companies to bid on bundles of routes without requiring the company to also bid on the individual routes. By using a combinatorial auction, the commission made it possible to create a more socially optimal allocation of the bus routes. 
 
-Another application is the auctions of aiport runway slots. Throughout the course of a day, at a sinlge airport there is a limited number of runway time slots, when an airplane can either takeoff or land. The number of slots is based on the size of the airport, weather conditions, the sizes of airplanes and many other factors. The auctioning of these slots are well suited for a combinatorial auction because airlines have to posses many other goods to be able to utilize the runway slot. For an airline to use the runway slot they also have to have purchaes the airplane gate at the terminal, baggage servies, a landing runway slot at the destination airport and many other considerations. These interdependencies make runway slots idealy suited to be aucitoned in a combinatorial auction setting. 
+Another application is the auctions of airport runway slots. Throughout the course of a day, at a single airport there is a limited number of runway time slots, when an airplane can either takeoff or land. The number of slots is based on the size of the airport, weather conditions, the sizes of airplanes and many other factors. The auctioning of these slots are well suited for a combinatorial auction because airlines have to posses many other goods to be able to utilize the runway slot. For an airline to use the runway slot they also have to have purchased the airplane gate at the terminal, baggage services, a landing runway slot at the destination airport and many other considerations. These interdependencies make runway slots ideally suited to be auctioned in a combinatorial auction setting. 
 
-Lastly, the FCC is moving towards using a combinatorial auction to sell the rights to used different spectrum bands in different geographical areas. Spectrum auctions are well suited for combinatorial auctions because for most companies having similiar bands in different areas is benificail. By using the same band in many locations, companies are able to create their hardware components more speciallized for that band. Ideally, by moving towards a combinatorial auciton, the FCC can create more optimal allocations that aids in the development of the use of wireless communication.
+Lastly, the FCC is moving towards using a combinatorial auction to sell the rights to used different spectrum bands in different geographical areas. Spectrum auctions are well suited for combinatorial auctions because for most companies having similar bands in different areas is beneficial. By using the same band in many locations, companies are able to create their hardware components more specialized for that band. Ideally, by moving towards a combinatorial auction, the FCC can create more optimal allocations that aids in the development of the use of wireless communication.
 
+\section{Single Minded Bidders}
 
+To isolate the analysis of computational complexity and strategic behavier from the issue of representing the valuation functions, the authors introduce the single minded bidder which has a simple valuation function. The single minded bidder has a valuation function $v$ such that for a set $S'$ and value $v'$, $v(S) = v'$ for all $S \subset S'$ and $v(S) = 0$ for all other $S$. This simplification allows for a valuation function that is very easy to represent, namely the pair $(S', v')$, and therefore simplifies the complexity and strategy analysis.
+
+\subsection{Complexity Analysis}
+An allocation for the combinatorial auction strives to maximize social welfare which is defined as $\sum_i v_i(S_i)$. Since an allocation must allocate disjoint sets of goods to each winning bidder, to maximize social welfare, we should either allocate a bundle equal to a bidders demand bundle $S'$ or allocate the $\emptyset$. By doing so, there are no goods that are being wasted by being allocated to a bidder that doesn't gain value for them. Therefore the authors define an allocation to single minded bidders as follows:
+
+\theoremstyle{definition}
+\begin{definition}{Allocation for Single Minded Bidders}
+\\
+\textbf{Input:} $(S'_i,v'_i)$ for each bidder $i = 1,...,n$.
+\\
+\textbf{Output:} The winning bids $W$ is a a subset of the bids from all of the players, $W \subset \{1,...,n\}$. Each winning bidder in W must posses a disjoint demand bundle from all other bundles of bidders in W: for every $i \neq j \in W$, $S'_i \cap S'_j = \emptyset$.
+\end{definition}
+
+This algorithm is similar to a ``weighted packing'' problem and is NP-complete. This can be proven by comparing the algorithm to the independent set problem which is known to be NP-complete. So even when the valuation function of bidders is simplified as much as possible without ignoring the fact that it is a combinatorial auction finding an optimal allocation is NP-complete. Consequently, when valuation functions are not restricted to single minded bids, an algorithm for that case must also be NP-complete because it is inherintly more difficult. 
+
+The authors note that when a problem is NP-complete there are three ways to apporach solving the problem: approximation, special cases, and heuristics. 
+
+\begin{description}
+  \item [Approximation:] Not only is it known that the independent set problem is NP-complete but it is also known that approximation the independent set problem is NP-complete. \todo{Add that we can apporx in poly time}
+
+  \item [Special Cases:] There are some special cases of combinatorial auctions that can be solved efficiently because of simplifications that they make. The case where each bidder only demands at most two goods and the case where if all of the goods are given a linear order bidders demands are made up of continuous sets of the goods.
+
+  \item [Heuristics:] Generally, there are many heiristics that you can apply to NP-complete problems to approximate there solutions rather efficiently. By using hueristics on very large input sizes and assuming that it is possible to solve the problem optimally on smaller input sets then most real world applications can be solved efficiently. 
+
+\end{description}
+
+While the authors comprehesivly analyized the complexity of the single minded bidders I wondered about more special cases and heuristics that could improve the compexity of the algoritm. For instance, what if there are specific goods that are only demanded by one bidder? Then surely to maximize social welfare it only makes sense to allocate those to the one bidder that demands it. Stemming from this, there might be others ways to simplify the algoritm given ceratain conditions about the contents of the demand sets of the bidders.
+
+\subsection{Strategy Analysis}
+\subsection{A Greedy Algorithm for Single Minded Bidders}
+
+\section{Walrasian Equilibrium}
+\section{Bidding Languages}
+\section{Ascending Auctions}
 
 
 \section{Bibliography}
+\todo{Add paper and paper with real world examples}
 
 
 
