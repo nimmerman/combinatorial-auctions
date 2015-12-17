@@ -125,18 +125,26 @@ As an example, there are two players Jack and Jill and two items \{x, y\}. Jack 
 
 Up until this point we have assumed that the auctioneer is just given the valuation function, $v_i$ for every bidder. In reality, for $m$ number of goods each bidder has to communicate their value for the $2^m - 1$ number of non-empty subsets of goods. Sinse this process becomes cobersome after only just a few dozen items, the communication become the limiting factor because we are able to compute allocations efficiently for thousands of goods. For this reason, it is important to discuss different mechanisms of communications valuations functions to the auctioneer. 
 
-When developing a bidding language we have two goals, namely simplicity and expresivity. First to keep things simple all valuation functions will be based on atomic bids. Where atomic bids are a pair $(S,p)$ where the bidder is bidding price $p$ for the bundle $S$. Then bidders can combin these atomic bids to create for complex valuation functions. They can be combined in two ways:
+When developing a bidding language we have two goals, namely simplicity and expresivity. First to keep things simple all valuation functions will be based on atomic bids. Where atomic bids are a pair $(S,p)$ where the bidder is bidding price $p$ for the bundle $S$, which is the same definition we had for single minded bidders. Then bidders can combin these atomic bids to create for complex valuation functions. They can be combined in two ways:
 
 \begin{description}
-  \item [OR:] A bidder can OR atomic bids together which indicates that any amount of the atomic bids can be valued at the same time. In essence the atomic bids are independent. For example, if a bid where $(\{a,b\}, 3) OR (\{c,d\}, 5)$ and the bidder is allocated $(\{a,b,c,d\})$ then they would get a total value of 8 because both atomic bids are being satisfied. 
+  \item [OR:] A bidder can OR atomic bids together which indicates that any amount of the atomic bids can be valued at the same time. In essence the atomic bids are independent. For example, if a bid where $(\{a,b\}, 3) OR (\{c,d\}, 5)$ and the bidder is allocated $(\{a,b,c,d\})$ then they would get a total value of 8 because both atomic bids are being satisfied. As another example, given the bid $(\{a,b\}, 3) XOR (\{a,c\}, 5)$, if the bidder is allocated $(\{a,b,c\})$ the bidder only revcieves a value of 5 because not both sets can use the good $a$ at the same time. 
 
-  \item [XOR:] When a bidder XORs atomic bids together they are indicating that only 1 of the atomic bids can be satisfied at the same time. For example, if a bid where $(\{a,b\}, 3) XOR (\{c,d\}, 5)$ and the bidder is allocated $(\{a,b,c,d\})$ then they would get a total value of 5, beacuse only one of the atomic bids is permitted to be satisfied.
+  \item [XOR:] When a bidder XORs atomic bids together they are indicating that only 1 of the atomic bids can be satisfied at the same time. For example, if a bid where $(\{a,b\}, 3) XOR (\{c,d\}, 5)$ and the bidder is allocated $(\{a,b,c,d\})$ then they would get a total value of 5, beacuse only one of the atomic bids is permitted to be satisfied. 
 
 \end{description}
 
+By using a combination of ORing and XORing atomic bids it is possible to create very complex valuation functions. 
+
+The authors further show that it is possible to simplify this bidding language even further by representing XOR bids as OR bids. This is done by creating dummy items for each bidder which can be used to make OR bids act like XOR bids. For example give the dummy good $d$, the bid $(\{a\}, 3) XOR (\{b\}, 5)$ is equivalent to $(\{a,d\}, 3) OR (\{b,d\}, 5)$. This works because the dummy good can only be used by the bidder to satisfy one set, which therefore makes each set mutually exclusive. 
+
+Being able to represent any valuation function solely as a ORing of atomic bids is very powerful for the following reason. A bidder that submits many ORed atomic bids looks the same as multiple bidders that each submited a single atomic bid to an allocation algorithm. This is because the allocation algorithm is just trying to optimize the total social welfare so the algorithm doesn't care who is getting the value the set that is being allocated but just cares about how that set is effecting the total social welfare. This means that all of the analysis and alorithms that were discussed for single minded bidders can be applied to valuation functions of ORs and XORs. 
+
+It is important to reiterate the importance that the greedy algorithms approximation $(\sum_{i \in OPT} v'_i \leq \sqrt{m} \sum_{i \in W} v'_i)$ is not dependent on the number of bidders. Due to this lack of dependency, the generalization that a single bidder multiple ORed atomic bids is equivalent to multiple bidders with sinlge bids does not effect the quality of the greedy algorithm.
+
 \section{Ascending Auctions} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+Ascending auctions 
 
 \section{Suggestions for Future Work} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
