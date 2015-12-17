@@ -86,7 +86,7 @@ While the authors comprehensively analyzed the complexity of the single minded b
 In the course, we found that the dominant strategy for bidders in a second-price auction is to bid their true value. This notion of bidding your true value is called incentive compatibility. Incentive compatibility is beneficial so that the auctioneer (and consequently the allocation algorithm) knows that it is working with true information. The other option is for bidders to shade their bid, which adds another layer of the complexity of determining how bidders are expected to shade their bid to the allocation algorithm. Since there are many benefits of having an incentive compatible auction, the author's asked will the single minded bidder bid truthfully in a combinatorial auction?
 
 The first option that the authors explore is can we use VCG prices to obtain incentive compatibility? While an optimal allocation at VCG prices would produce incentive compatibility, it has already been shown that we cannot easily achieve an optimal allocation. In addition, VCG prices do not produce incentive compatibility for an approximate allocation but only for an exactly optimal allocation. Therefore, we can't simply use VCG prices to get incentive compatibility. To circumvent VCG prices, the authors outline a greedy algorithm that can be used to obtain incentive compatibility, which is described below.
-
+\clearpage
 \theoremstyle{definition}
 \begin{definition}{A Greedy Algorithm for Single Minded Bidders}
 \\
