@@ -1,7 +1,10 @@
 \documentclass[10pt,onecolumn,letterpaper]{article}
 \usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
 \usepackage{amsthm}
+\usepackage{amssymb}
 \usepackage{todonotes}
+\usepackage{csquotes}
+
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
@@ -24,7 +27,7 @@ Ann Arbor, Michigan\\
 \section{Abstract}
 \todo{don't forget me}
 
-\section{Introduction}
+\section{Introduction} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In a standard auction, \todo{mention how this relates to auctions in the course} there is a single good being sold to one or more players who have a demand for that good. The auctioneer determines which player is allocated the good based on which player displays the greatest demand. There are many ways for the auctioneer to coordinate the auction, including the ascending and descending price auction, which all have the overall goal of determining who is allocated the good. Combinatorial auctions generalize this concept by allowing multiple goods to be auctions and players have demands for bundles or subsets of the goods. The authors, Liad Blumrosen and Noam Nisan, in their paper on Combinatorial Auctions, analyze the computational complexity of possible allocation algorithms, how to represent and communicate the value functions of bidders, and the strategic behaivier of rational bidders in combinatorial auctions. In the remainder of this paper, I will be summerizing and analyzing the main arguments made by Blumrosen and Nisan on combinatorial auctions. 
 
@@ -42,7 +45,7 @@ Another application is the auctions of airport runway slots. Throughout the cour
 
 Lastly, the FCC is moving towards using a combinatorial auction to sell the rights to used different spectrum bands in different geographical areas. Spectrum auctions are well suited for combinatorial auctions because for most companies having similar bands in different areas is beneficial. By using the same band in many locations, companies are able to create their hardware components more specialized for that band. Ideally, by moving towards a combinatorial auction, the FCC can create more optimal allocations that aids in the development of the use of wireless communication.
 
-\section{Single Minded Bidders}
+\section{Single Minded Bidders} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 To isolate the analysis of computational complexity and strategic behavier from the issue of representing the valuation functions, the authors introduce the single minded bidder which has a simple valuation function. The single minded bidder has a valuation function $v$ such that for a set $S'$ and value $v'$, $v(S) = v'$ for all $S \subset S'$ and $v(S) = 0$ for all other $S$. This simplification allows for a valuation function that is very easy to represent, namely the pair $(S', v')$, and therefore simplifies the complexity and strategy analysis.
 
@@ -73,14 +76,73 @@ The authors note that when a problem is NP-complete there are three ways to appo
 While the authors comprehesivly analyized the complexity of the single minded bidders I wondered about more special cases and heuristics that could improve the compexity of the algoritm. For instance, what if there are specific goods that are only demanded by one bidder? Then surely to maximize social welfare it only makes sense to allocate those to the one bidder that demands it. Stemming from this, there might be others ways to simplify the algoritm given ceratain conditions about the contents of the demand sets of the bidders.
 
 \subsection{Strategy Analysis}
-\subsection{A Greedy Algorithm for Single Minded Bidders}
 
-\section{Walrasian Equilibrium}
-\section{Bidding Languages}
-\section{Ascending Auctions}
+In the course, we found that the dominent strategy for bidders in a second-price auction is to bid their true value, which is called incentive compatibility. This was benificial so that the auctioneer (and consequently the allocation algorithm) knows that it is working with true information. The other option for bidders is to shade their bid, this adds another layer of the complexitiy to the allocation algorithmof determining how bidders are expected to shade their bid. This same benift if it also applies to combinatorial auctions so the author's also asked the questions will bidders bid truthfully?
+
+The first option that the authors explore is can we use VCG prices to obtain incentive compatibility? While an optimal allocation at VCG prices would produce incentive compatibility, it has already been shown that we cannot easily achieve an optimal allocation. In addition, VCG prices do not produce incentive compatibility for an approximate allocation but only for an exactly optimal allocation. Therefore, we can't simply use VCG prices to get incentive compatibility. To circumvent VCG prices, the authors outline a greedy algorithm that can be used to obtain incentive compatibility, which is described below.
+
+\theoremstyle{definition}
+\begin{definition}{A Greedy Algorithm for Single Minded Bidders}
+\\
+\textbf{Initialization:} Reorder the bids s.t. $\frac{v'_1}{\sqrt{|S'_1|}} \geq \frac{v'_2}{\sqrt{|S'_2|}} \geq ... \geq \frac{v'_n}{\sqrt{|S'_n|}} $
+\\
+\textbf{For i = 1...n do:} if $S'_i \cap (\bigcup_{j \in W} S'_j) = \emptyset$ then $W = W \cup i$
+\\
+\textbf{Output:} The allocation is the set of winners, $W$. Each winning bidder has to pay $p_i = \frac{v'_j}{\sqrt{|S'_j|/|S'_i|}}$, where j is the smalles index s.t. $S'_i \cap S'_j \neq \emptyset$, and for all $k < j, k \neq i, S'_k \cap S'_j = \emptyset$ (if no such j exists the $p_i = 0$). \todo{add citation to def} 
+\end{definition}
+
+The authors then prove that this greedy algorithm produces honest bidders. Firstly, a bidder will never recieve a negative payoff if they bid truthfully. Either they lose and recieve a payoff of 0 or they win where their value has to be greater than or equal to the next highest bidder, which is also the price they pay, so they can not have a negative payoff. Next, we must show that a bidder cannot improve their payoff by bidding $(\tilde{S}, \tilde{v})$ instead of their honest value $(S,v)$. If $(\tilde{S}, \tilde{v})$ produces a losing bid then surely the bidder could only imporve by being honest and if $S \nsubseteq \tilde{S}$ then the bidder cannot ever gain any payoff so for the following analysis we can assume that $(\tilde{S}, \tilde{v})$ is a winning bid and $S \subseteq \tilde{S}$.
+
+\begin{itemize}
+	\item A bidder is not worse off bidding $(S, \tilde{v})$ with price $p$ than $(\tilde{S}, \tilde{v})$ with price $\tilde{p}$. $(S,x)$ will be a losing bid for all $x < p$ because $p$ is the bid that the next bidder placed so if $x < p$ then the bidder that bid $p$ will win and not the current bidder. Due to the structure of the ordering of the bids in the greedy algorithm, this also means that $(\tilde{S}, x)$ will be a losing bid for all $x < p$ therefore $\tilde{p}$ must be $ \geq p$ so by bidding $(S, \tilde{v})$ the bidder still wins and the price will not increase. 
+	
+	\item A bidder is not worse off bidding $(S, v)$ at price $p$ than bidding $(S, \tilde{v})$. If $\tilde{v} > p$ then the bidder will still win and pay the same price thus not gaining any value and if $\tilde{v} < p$ then the bidder will lose and have zero payoff. So the it is in the bidders best interest to bid $(S,v)$ and not $(S, \tilde{v})$.
+
+	\item If bidding honestly causes a bidder to lose than they have nothing to gain by raising their bid because that could never cause them to gain any value.
+\end{itemize}
+
+In addition, the authors also show that the greedy alorithm approximates the optiaml allocation to within a degree of $\sqrt{m}$.
+
+$$\sum_{i \in OPT} v'_i \leq \sqrt{m} \sum_{i \in W} v'_i $$
+
+The formal proof can be found in the original paper. \todo{add citation}It is interesting to note that the approximation depends on $m$, the number of goods, but not $n$ the number of bidders. This means that for a constant number of goods the algorithm will have the same degree of approximation regardless of how many bidders there are. This property will later be of great use in the discussion on bidding languages. \todo{add ref to actual section number}
+
+\section{Walrasian Equilibrium} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In all of the auction types we discussed in class it was always important to ask the question, what happens in equilibrium? First, we need to define what is the demad each bidder formally. The authors define the demand of a bidder as follows:
+
+\theoremstyle{definition}
+\begin{definition}{The Demand of a Bidder} For a a bidder with valuation $v_i$ and given item proces $p_q,...p_m$, a bundle $T$ is called a demand of bidder $i$ if for every other bundle $S$ we have that $v_i(S) - \sum_{j \in S} p_j \leq v_i(T) - \sum_{j \in S} P_j$. Assuming that the price of each bundle is the sum of the prices of the items in the bundle.
+\end{definition}
+
+Using this definition of a demand of a bidder, the authors define A Walrasian equilibrium as a set of ``market clearing'' prices where every bidder recieves a bundle in his demand set, and unallocated items have prices of zero. This result also shows that a Walrasian Equlibrium will be socially optimal, this is known as The First Welfare Theorm. 
+
+% \begin{displayquote}
+As an example, there are two players Jack and Jill and two items \{x, y\}. Jack has the following value-item pairs \{3, x\} and \{6, x and y\} and Jill has the following valuations \{4, y\} and \{6, x and y\}. A Walrasian equilirbium exists and prices 3 for $x$ and 4 for $y$. At these prices, Jack will win good $x$ andd Jill will win good $y$ which gives a total social welfare of $3 + 4 = 7$ which is the maximum that is possible for this auction. To prove that these prices are in equilibrium, we can deviate the prices and see that the overall social welfare decreases. If the price of good $x$ goes down to 2 then the demand of both Jack and Jill become \{x and y\} and since both Jack and Jill cannot both get x and y then eithe Jack or Jill will not be allocated their demand. If the price of $x$ goes up to 4 then Jack then no one will demand good $x$ and $x$ will be unallocated but since it has a price that is non-zero this violates the definition of a Walrasian equilibrium. For analogous reasons, the price of $y$ can be show to be in equilibrium. 
+% \end{displayquote}
+
+\section{Bidding Languages} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Up until this point we have assumed that the auctioneer is just given the valuation function, $v_i$ for every bidder. In reality, for $m$ number of goods each bidder has to communicate their value for the $2^m - 1$ number of non-empty subsets of goods. Sinse this process becomes cobersome after only just a few dozen items, the communication become the limiting factor because we are able to compute allocations efficiently for thousands of goods. For this reason, it is important to discuss different mechanisms of communications valuations functions to the auctioneer. 
+
+When developing a bidding language we have two goals, namely simplicity and expresivity. First to keep things simple all valuation functions will be based on atomic bids. Where atomic bids are a pair $(S,p)$ where the bidder is bidding price $p$ for the bundle $S$. Then bidders can combin these atomic bids to create for complex valuation functions. They can be combined in two ways:
+
+\begin{description}
+  \item [OR:] A bidder can OR atomic bids together which indicates that any amount of the atomic bids can be valued at the same time. In essence the atomic bids are independent. For example, if a bid where $(\{a,b\}, 3) OR (\{c,d\}, 5)$ and the bidder is allocated $(\{a,b,c,d\})$ then they would get a total value of 8 because both atomic bids are being satisfied. 
+
+  \item [XOR:] When a bidder XORs atomic bids together they are indicating that only 1 of the atomic bids can be satisfied at the same time. For example, if a bid where $(\{a,b\}, 3) XOR (\{c,d\}, 5)$ and the bidder is allocated $(\{a,b,c,d\})$ then they would get a total value of 5, beacuse only one of the atomic bids is permitted to be satisfied.
+
+\end{description}
+
+\section{Ascending Auctions} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Bibliography}
+
+\section{Suggestions for Future Work} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\section{Bibliography} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \todo{Add paper and paper with real world examples}
 
 
